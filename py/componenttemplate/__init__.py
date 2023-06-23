@@ -2,12 +2,25 @@ from __future__ import annotations
 
 __version__ = "0.0.1"
 
-__all__ = ("example_number_input",)
+__all__ = ("example_number_input", "input_html", "input_text")
 
 
 from pathlib import PurePath
+from typing import Literal, Optional
 
 from htmltools import HTMLDependency, Tag, TagAttrs, TagAttrValue, TagChild, TagList
+
+
+def input_text(id: str, label: TagChild, value: Optional[str] = None, placeholder: Optional[str] = None, **kwargs: TagAttrValue) -> TagList:
+    return input_html(id, label, type="text", value=value, placeholder=placeholder, **kwargs)
+
+
+def input_html(id: str, label: TagChild, type: Literal["text", "number"], value: Optional[str | float | int] = None, placeholder: Optional[str] = None, **kwargs: TagAttrValue) -> TagList:
+
+    return TagList(
+        component_dep("bslib-input-html.js"),
+        Tag("bslib-input-html", label, type=type, id=id, value=value, placeholder=placeholder, _add_ws=True, **kwargs)
+    )
 
 
 def example_number_input(
@@ -38,16 +51,15 @@ def example_number_input(
     """
 
     return TagList(
-        component_dep(),
+        component_dep("example-number-input.js"),
         Tag("example-number-input", *args, id=id, _add_ws=_add_ws, **kwargs),
     )
 
-
-def component_dep() -> HTMLDependency:
+def component_dep(src: str) -> HTMLDependency:
     www_path = PurePath(__file__).parent / "www"
 
     return HTMLDependency(
-        name="componenttemplate",
+        name=f"shinycomponent-{src}",
         version=__version__,
         source={
             "package": "componenttemplate",
@@ -55,6 +67,6 @@ def component_dep() -> HTMLDependency:
         },
         stylesheet={"href": "open-props.min.css"},
         script=[
-            {"src": "example-number-input.js", "type": "module"},
+            {"src": src, "type": "module"},
         ],
     )

@@ -18,7 +18,9 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "build": "esbuild src/example-number-input.ts --bundle --minify --sourcemap --outdir=out"
+    "build": "npm run build-number-input && npm run input-html",
+    "build-number-input": "esbuild src/example-number-input.ts --bundle --minify --sourcemap --outdir=out",
+    "input-html": "esbuild src/bslib-input-html.ts --bundle --minify --sourcemap --outdir=out --watch"
   },
   "dependencies": {
     "lit": "^2.7.4"

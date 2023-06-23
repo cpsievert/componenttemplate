@@ -11,37 +11,35 @@ export class BslibHtmlInput extends LitElement {
   @property({ type: String }) id: string = "id";
   @property({ type: String }) placeholder: string = "placeholder";
   @property({ type: String }) value: string = "";
-  //@property({ type: Boolean }) floating: boolean = false;
-
-  static styles = css``;
 
   onChangeCallback = (x: boolean) => {};
 
   handleChange(e: InputEvent) {
-    console.log(e);
-    // Let Shiny know we've changed
-    this.onChangeCallback(true);
+    this.value = (e.target as HTMLInputElement).value;
+    this.onChangeCallback(true); // Let Shiny know we've changed
   }
 
   connectedCallback(): void {
     super.connectedCallback();
-    const root = this.renderRoot as ShadowRoot;
+    this._adoptBootstrapStyles();
+  }
 
+  private _adoptBootstrapStyles(): void {
     // TODO: loop through all the stylesheets and find the one that is bootstrap
     const bsStyles = document.styleSheets[1];
 
-    // TODO: is this the most efficient way to do this?
+    // TODO: is this the best way to do this?
     const sheet = new CSSStyleSheet();
     for (let i = 0; i < bsStyles.cssRules.length; i++) {
       const rule = bsStyles.cssRules[i];
       sheet.insertRule(rule.cssText);
     }
 
+    const root = this.renderRoot as ShadowRoot;
     root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
   }
 
   render() {
-    // TODO: put the label first if not floating?
     return html`
       <div class="form-floating">
         <input

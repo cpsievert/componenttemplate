@@ -8,9 +8,9 @@ app_ui = ui.page_fluid(
     ui.h5("Number Input"),
     example_number_input("num", value=10, min=5, max=15),
     ui.output_text_verbatim("num_val"),
-    input_text("name", label="Enter your name:"),
+    input_text("name", label="Your name"),
     ui.output_text_verbatim("name"),
-    input_html("age", label="Enter your age:", type="number", value=10, min=5, max=15),
+    input_html("age", label="Your age", type="number", value=35, min=0, max=150),
     ui.output_text_verbatim("age")
 )
 
